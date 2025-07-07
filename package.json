@@ -1,0 +1,17 @@
+{
+  "name": "framer",
+  "version": "1.0.0",
+  "description": "Image border application using Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["electron", "image", "border", "portrait"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^37.2.0"
+  }
+}

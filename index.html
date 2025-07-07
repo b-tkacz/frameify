@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Border App - 4x5 Portrait Mode</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .border-controls {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .control-row:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .border-controls label {
+      font-weight: 600;
+      color: #495057;
+      min-width: 100px;
+      text-align: right;
+    }
+
+    #borderSlider {
+      width: 200px;
+      vertical-align: middle;
+    }
+
+    #borderColor {
+      width: 50px;
+      height: 35px;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    #borderValue, #colorValue {
+      font-weight: 600;
+      color: #007ACC;
+      min-width: 60px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .slider-description {
+      margin: 15px 0 0 0;
+      font-size: 12px;
+      color: #6c757d;
+      font-style: italic;
+      text-align: center;
+    }
+
+    button {
+      background-color: #007ACC;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #005a9e;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .preview-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .image-container {
+      display: inline-block;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-container h3 {
+      margin: 0;
+      padding: 10px;
+      background-color: #f8f9fa;
+      font-size: 14px;
+      color: #666;
+    }
+
+    #originalCanvas, #borderedCanvas {
+      max-width: 400px;
+      max-height: 300px;
+      display: block;
+    }
+
+    .drop-zone {
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 60px 20px;
+      text-align: center;
+      margin: 20px 0;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover {
+      border-color: #007ACC;
+      background-color: #f8f9fa;
+    }
+
+    .drop-zone.dragover {
+      border-color: #007ACC;
+      background-color: #e3f2fd;
+    }
+
+    .info {
+      background-color: #e3f2fd;
+      border: 1px solid #2196F3;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 20px 0;
+      color: #1976D2;
+    }
+
+    .status {
+      text-align: center;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .bulk-section {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .bulk-section h3 {
+      margin: 0 0 20px 0;
+      color: #495057;
+      text-align: center;
+    }
+
+    .image-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      background: white;
+      margin-bottom: 15px;
+    }
+
+    .image-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid #f1f3f4;
+      font-size: 13px;
+    }
+
+    .image-item:last-child {
+      border-bottom: none;
+    }
+
+    .image-item.processed {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .image-item.processing {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .image-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .image-status {
+      margin-left: 10px;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .bulk-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .progress-section {
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #007ACC;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    #progressText {
+      font-size: 14px;
+      color: #495057;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Border App - 4x5 Portrait Mode</h1>
+    
+    <div class="info">
+      <strong>Info:</strong> This app adds customizable borders to images, optimized for 4x5 portrait orientation. 
+      Use single image mode for preview and editing, or select multiple images for bulk processing. 
+      Adjust border size and color to customize your results!
+    </div>
+
+    <div class="controls">
+      <button id="selectImageBtn">Select Single Image</button>
+      <button id="selectMultipleBtn">Select Multiple Images</button>
+      <button id="addBorderBtn" disabled>Add Border</button>
+      <button id="saveImageBtn" disabled>Save Image</button>
+      <button id="bulkProcessBtn" disabled>Process All Images</button>
+    </div>
+
+    <div class="border-controls">
+      <div class="control-row">
+        <label for="borderSlider">Border Size:</label>
+        <input type="range" id="borderSlider" min="0" max="50" value="5" step="1">
+        <span id="borderValue">5%</span>
+      </div>
+      <div class="control-row">
+        <label for="borderColor">Border Color:</label>
+        <input type="color" id="borderColor" value="#ffffff">
+        <span id="colorValue">#ffffff</span>
+      </div>
+      <p class="slider-description">Adjust the border size and color around your image</p>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+      <p>Drag and drop images here, or use the buttons above</p>
+      <p><small>Single image: Preview mode | Multiple images: Bulk processing mode</small></p>
+      <p><small>Supported formats: JPG, PNG, GIF, BMP, WebP</small></p>
+    </div>
+
+    <div id="status" class="status" style="display: none;"></div>
+
+    <div id="bulkSection" class="bulk-section" style="display: none;">
+      <h3>Bulk Processing</h3>
+      <div id="imageList" class="image-list"></div>
+      <div class="bulk-controls">
+        <button id="clearListBtn">Clear List</button>
+        <button id="bulkSaveBtn" disabled>Save All to Folder</button>
+      </div>
+      <div id="bulkProgress" class="progress-section" style="display: none;">
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div id="progressText">Processing...</div>
+      </div>
+    </div>
+
+    <div class="preview-container" id="previewContainer" style="display: none;">
+      <div class="image-container">
+        <h3>Original Image</h3>
+        <canvas id="originalCanvas"></canvas>
+      </div>
+      
+      <div class="image-container" id="borderedContainer" style="display: none;">
+        <h3>With 4x5 Portrait Border</h3>
+        <canvas id="borderedCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
