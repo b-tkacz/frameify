@@ -1,0 +1,205 @@
+:root {
+  --dark-grayish-blue: #1E1E2F;
+  --lighter-grayish-blue: #2D2D44;
+  --stronger-blue: #628880;
+  --darker-stronger-blue: #293835;
+  --white: #FFFFFF;
+  --light-gray: #d6d6d6;
+  --progress-blue: #007bff;
+  --bulk-section-bg: #f9f9f9;
+  --bulk-section-border: #ddd;
+  --image-container-bg: #f1f1f1;
+  --image-container-text: #444;
+  --progress-text: #495057;
+  --off-white: #F8F8F8;
+  --drop-zone-text: #333;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--dark-grayish-blue);
+  color: var(--white);
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--lighter-grayish-blue);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  color: var(--white);
+}
+
+h1 {
+  text-align: center;
+  color: var(--stronger-blue);
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.info {
+  background-color: var(--stronger-blue);
+  color: var(--white);
+  border: none;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.controls {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button {
+  background-color: var(--stronger-blue);
+  color: var(--white);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: var(--darker-stronger-blue);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: var(--light-gray);
+  cursor: not-allowed;
+}
+
+.drop-zone {
+  border: 2px dashed var(--stronger-blue);
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  margin: 30px 0;
+  transition: border-color 0.3s, background-color 0.3s;
+  cursor: pointer;
+  background-color: var(--lighter-grayish-blue); /* Revert to original background */
+  color: var(--white); /* Revert text color */
+}
+
+.drop-zone:hover {
+  background-color: var(--dark-grayish-blue); /* Revert hover background */
+  border-color: var(--darker-stronger-blue);
+}
+
+.drop-zone.dragover {
+  border-color: var(--stronger-blue);
+  background-color: #e6f7ff;
+}
+
+.border-controls {
+  background-color: var(--dark-grayish-blue);
+  color: var(--white);
+  border: 1px solid var(--stronger-blue);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.border-controls label {
+  font-weight: 600;
+  color: var(--white);
+  min-width: 120px;
+  text-align: right;
+}
+
+#borderSlider {
+  width: 250px;
+}
+
+#borderColor {
+  width: 50px;
+  height: 35px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.preview-container {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.image-container {
+  display: inline-block;
+  margin: 15px;
+  border: 1px solid var(--bulk-section-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.image-container h3 {
+  margin: 0;
+  padding: 10px;
+  background-color: var(--image-container-bg);
+  font-size: 1rem;
+  color: var(--image-container-text);
+}
+
+#originalCanvas, #borderedCanvas {
+  max-width: 100%;
+  max-height: 300px;
+  display: block;
+}
+
+.bulk-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: var(--bulk-section-bg);
+  border-radius: 12px;
+  border: 1px solid var(--bulk-section-border);
+}
+
+.bulk-section h3 {
+  margin: 0 0 20px 0;
+  color: var(--progress-text);
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--progress-blue);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+#progressText {
+  font-size: 14px;
+  color: var(--progress-text);
+  font-weight: 600;
+}
